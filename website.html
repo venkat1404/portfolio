@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Venkat Gollangi</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --serif: 'DM Serif Display', Georgia, serif;
+      --sans: 'DM Sans', system-ui, sans-serif;
+      --bg: #ffffff;
+      --bg2: #f7f7f5;
+      --text: #1a1a18;
+      --muted: #6b6b67;
+      --faint: #a0a09c;
+      --border: rgba(0,0,0,0.1);
+      --border2: rgba(0,0,0,0.06);
+      --accent: #1a1a18;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #111110;
+        --bg2: #1a1a18;
+        --text: #f0efea;
+        --muted: #9a9a94;
+        --faint: #5a5a56;
+        --border: rgba(255,255,255,0.12);
+        --border2: rgba(255,255,255,0.06);
+      }
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--sans);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .container { max-width: 780px; margin: 0 auto; padding: 0 1.5rem; }
+
+    /* NAV */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      background: var(--bg);
+      border-bottom: 0.5px solid var(--border2);
+      padding: 1.1rem 0;
+    }
+    nav .container {
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .nav-name {
+      font-family: var(--serif);
+      font-size: 17px;
+      color: var(--text);
+      text-decoration: none;
+    }
+    .nav-links { display: flex; gap: 1.75rem; list-style: none; }
+    .nav-links a {
+      font-size: 13px; font-weight: 400; color: var(--muted);
+      text-decoration: none; letter-spacing: 0.01em;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--text); }
+
+    /* SECTIONS */
+    section { padding: 5rem 0; border-bottom: 0.5px solid var(--border2); }
+    section:last-of-type { border-bottom: none; }
+
+    .section-label {
+      font-size: 11px; font-weight: 500; letter-spacing: 0.12em;
+      color: var(--faint); text-transform: uppercase;
+      margin-bottom: 2.5rem;
+    }
+
+    /* HERO */
+    #hero { padding: 6rem 0 5rem; }
+    .hero-eyebrow {
+      font-size: 12px; font-weight: 400; letter-spacing: 0.08em;
+      color: var(--faint); text-transform: uppercase; margin-bottom: 1.25rem;
+    }
+    .hero h1 {
+      font-family: var(--serif);
+      font-size: clamp(2.4rem, 6vw, 3.6rem);
+      line-height: 1.08;
+      font-weight: 400;
+      margin-bottom: 1.5rem;
+      max-width: 620px;
+    }
+    .hero h1 em { font-style: italic; color: var(--muted); }
+    .hero-desc {
+      font-size: 15px; line-height: 1.85;
+      color: var(--muted); max-width: 520px; margin-bottom: 2rem;
+    }
+    .hero-actions { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+    .btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 13px; font-weight: 400;
+      padding: 9px 20px; border-radius: 100px;
+      text-decoration: none; transition: background 0.15s, color 0.15s;
+      cursor: pointer; border: 0.5px solid var(--border);
+      background: transparent; color: var(--text);
+      font-family: var(--sans);
+    }
+    .btn:hover { background: var(--bg2); }
+    .btn-primary {
+      background: var(--text); color: var(--bg);
+      border-color: var(--text);
+    }
+    .btn-primary:hover { opacity: 0.85; background: var(--text); }
+
+    /* ABOUT */
+    .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2.5rem; }
+    .about-block strong {
+      font-size: 12px; font-weight: 500; letter-spacing: 0.06em;
+      color: var(--faint); text-transform: uppercase;
+      display: block; margin-bottom: 0.6rem;
+    }
+    .about-block p { font-size: 14px; line-height: 1.85; color: var(--muted); }
+
+    /* SKILLS */
+    .skills-categories { display: flex; flex-direction: column; gap: 1.5rem; }
+    .skill-row { display: flex; gap: 1.5rem; align-items: baseline; }
+    .skill-cat {
+      font-size: 12px; font-weight: 500; color: var(--faint);
+      letter-spacing: 0.04em; min-width: 120px; flex-shrink: 0;
+    }
+    .skill-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+    .skill-tag {
+      font-size: 12px; padding: 5px 12px;
+      border: 0.5px solid var(--border);
+      border-radius: 100px; color: var(--muted);
+      background: var(--bg2);
+    }
+
+    /* EXPERIENCE */
+    .exp-list { display: flex; flex-direction: column; gap: 0; }
+    .exp-item {
+      padding: 1.75rem 0;
+      border-bottom: 0.5px solid var(--border2);
+    }
+    .exp-item:first-child { padding-top: 0; }
+    .exp-header {
+      display: flex; justify-content: space-between;
+      align-items: baseline; margin-bottom: 0.3rem; gap: 1rem;
+    }
+    .exp-title { font-size: 15px; font-weight: 500; color: var(--text); }
+    .exp-date { font-size: 12px; color: var(--faint); white-space: nowrap; }
+    .exp-company { font-size: 13px; color: var(--muted); margin-bottom: 0.85rem; }
+    .exp-bullets { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; }
+    .exp-bullets li {
+      font-size: 13.5px; color: var(--muted); line-height: 1.75;
+      padding-left: 1rem; position: relative;
+    }
+    .exp-bullets li::before {
+      content: '–'; position: absolute; left: 0; color: var(--faint);
+    }
+
+    /* PROJECTS */
+    .projects-grid { display: flex; flex-direction: column; gap: 0; }
+    .project-card {
+      padding: 1.75rem 0;
+      border-bottom: 0.5px solid var(--border2);
+    }
+    .project-card:first-child { padding-top: 0; }
+    .project-top {
+      display: flex; justify-content: space-between;
+      align-items: baseline; margin-bottom: 0.5rem; gap: 1rem;
+    }
+    .project-title { font-size: 15px; font-weight: 500; color: var(--text); }
+    .project-date { font-size: 12px; color: var(--faint); white-space: nowrap; }
+    .project-desc { font-size: 13.5px; color: var(--muted); line-height: 1.75; }
+    .project-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 0.85rem; }
+    .project-tag {
+      font-size: 11px; padding: 3px 10px;
+      border: 0.5px solid var(--border);
+      border-radius: 100px; color: var(--faint);
+    }
+
+    /* EDUCATION */
+    .edu-list { display: flex; flex-direction: column; gap: 0; }
+    .edu-item {
+      padding: 1.75rem 0;
+      border-bottom: 0.5px solid var(--border2);
+    }
+    .edu-item:first-child { padding-top: 0; }
+    .edu-header {
+      display: flex; justify-content: space-between;
+      align-items: baseline; gap: 1rem; margin-bottom: 0.25rem;
+    }
+    .edu-degree { font-size: 15px; font-weight: 500; color: var(--text); }
+    .edu-date { font-size: 12px; color: var(--faint); white-space: nowrap; }
+    .edu-school { font-size: 13px; color: var(--muted); margin-bottom: 0.5rem; }
+    .edu-detail { font-size: 13px; color: var(--faint); }
+
+    /* CONTACT */
+    #contact { padding-bottom: 6rem; }
+    .contact-inner {
+      display: flex; justify-content: space-between;
+      align-items: center; flex-wrap: wrap; gap: 1.5rem;
+    }
+    .contact-text h2 {
+      font-family: var(--serif);
+      font-size: clamp(1.6rem, 4vw, 2.2rem);
+      font-weight: 400; margin-bottom: 0.5rem;
+    }
+    .contact-text p { font-size: 14px; color: var(--muted); }
+    .contact-links { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+
+    /* FOOTER */
+    footer {
+      padding: 2rem 0;
+      border-top: 0.5px solid var(--border2);
+    }
+    footer .container {
+      display: flex; justify-content: space-between;
+      align-items: center; flex-wrap: wrap; gap: 1rem;
+    }
+    footer p { font-size: 12px; color: var(--faint); }
+
+    @media (max-width: 540px) {
+      .about-grid { grid-template-columns: 1fr; }
+      .skill-row { flex-direction: column; gap: 0.5rem; }
+      .skill-cat { min-width: unset; }
+      nav .container { flex-direction: column; gap: 0.75rem; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <div class="container">
+      <a href="#hero" class="nav-name">Venkat Gollangi</a>
+      <ul class="nav-links">
+        <li><a href="#about">About</a></li>
+        <li><a href="#experience">Experience</a></li>
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <section id="hero">
+    <div class="container">
+      <p class="hero-eyebrow">Information Systems · UMD Smith School of Business</p>
+      <h1>Data, systems, and the <em>logic</em><br>that connects them.</h1>
+      <p class="hero-desc">I build pipelines, dashboards, and intelligent systems that turn messy data into decisions. Currently pursuing my MS in Information Systems at the University of Maryland.</p>
+      <div class="hero-actions">
+        <a href="#projects" class="btn btn-primary">View projects →</a>
+        <a href="#contact" class="btn">Get in touch</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="about">
+    <div class="container">
+      <p class="section-label">About</p>
+      <div class="about-grid">
+        <div class="about-block">
+          <strong>Who I am</strong>
+          <p>This is placeholder text for your personal introduction. Tell your story here — where you're from, what drives you, and what makes you you. A few sentences about your background and personality go a long way.</p>
+        </div>
+        <div class="about-block">
+          <strong>What I do</strong>
+          <p>I sit at the intersection of data engineering, analytics, and business strategy. From building ETL pipelines at a private equity firm to designing AI-powered complaint resolution systems, I focus on solutions that actually get used.</p>
+        </div>
+        <div class="about-block">
+          <strong>Currently</strong>
+          <p>MS Information Systems student at UMD Smith (GPA 3.95), Terrapin Scholar. Coursework spans data mining, cloud computing, AI systems design, and project management.</p>
+        </div>
+        <div class="about-block">
+          <strong>Outside work</strong>
+          <p>Placeholder — add something personal here. Hobbies, interests, what you're reading or building on the side. This is the part that makes you memorable.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="skills">
+    <div class="container">
+      <p class="section-label">Skills</p>
+      <div class="skills-categories">
+        <div class="skill-row">
+          <span class="skill-cat">Languages</span>
+          <div class="skill-tags">
+            <span class="skill-tag">Python</span>
+            <span class="skill-tag">SQL</span>
+            <span class="skill-tag">R</span>
+            <span class="skill-tag">DAX</span>
+          </div>
+        </div>
+        <div class="skill-row">
+          <span class="skill-cat">Data Engineering</span>
+          <div class="skill-tags">
+            <span class="skill-tag">SSIS</span>
+            <span class="skill-tag">Snowflake</span>
+            <span class="skill-tag">Azure Data Factory</span>
+            <span class="skill-tag">Kafka</span>
+            <span class="skill-tag">MongoDB</span>
+            <span class="skill-tag">Neo4j</span>
+          </div>
+        </div>
+        <div class="skill-row">
+          <span class="skill-cat">BI & Visualization</span>
+          <div class="skill-tags">
+            <span class="skill-tag">Power BI</span>
+            <span class="skill-tag">Tableau</span>
+            <span class="skill-tag">Excel</span>
+          </div>
+        </div>
+        <div class="skill-row">
+          <span class="skill-cat">Cloud</span>
+          <div class="skill-tags">
+            <span class="skill-tag">Microsoft Azure</span>
+            <span class="skill-tag">AWS</span>
+          </div>
+        </div>
+        <div class="skill-row">
+          <span class="skill-cat">Automation & AI</span>
+          <div class="skill-tags">
+            <span class="skill-tag">UiPath</span>
+            <span class="skill-tag">Power Automate</span>
+            <span class="skill-tag">OpenAI API</span>
+            <span class="skill-tag">RAG</span>
+            <span class="skill-tag">Prompt Engineering</span>
+          </div>
+        </div>
+        <div class="skill-row">
+          <span class="skill-cat">Project Mgmt</span>
+          <div class="skill-tags">
+            <span class="skill-tag">Agile</span>
+            <span class="skill-tag">Scrum</span>
+            <span class="skill-tag">Lucidchart</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="experience">
+    <div class="container">
+      <p class="section-label">Experience</p>
+      <div class="exp-list">
+
+        <div class="exp-item">
+          <div class="exp-header">
+            <span class="exp-title">Data Engineer</span>
+            <span class="exp-date">Jun 2024 – Jun 2025</span>
+          </div>
+          <p class="exp-company">Accordion India — Global Private Equity Consulting & Analytics Hub</p>
+          <ul class="exp-bullets">
+            <li>Built scalable ETL pipelines using SSIS to ingest data from HubSpot, Google Analytics, and UKG, accelerating downstream reporting by 40%.</li>
+            <li>Automated repetitive workflows with UiPath and Power Automate, cutting manual effort by over 20 hours a month.</li>
+            <li>Developed Power BI dashboards for stakeholders, improving reporting efficiency and increasing Net Promoter Score by 20%.</li>
+            <li>Created reusable SSIS templates, reducing new pipeline development time by 35%.</li>
+          </ul>
+        </div>
+
+        <div class="exp-item">
+          <div class="exp-header">
+            <span class="exp-title">Technical Associate Intern</span>
+            <span class="exp-date">Jan 2024 – Jun 2024</span>
+          </div>
+          <p class="exp-company">Accordion India</p>
+          <ul class="exp-bullets">
+            <li>Optimized SQL queries in reporting pipelines, reducing query execution time by 25% in critical reports.</li>
+            <li>Monitored and troubleshot ETL job failures, improving pipeline success rate by 30%.</li>
+            <li>Contributed to the design of five KPI dashboards in collaboration with business and engineering teams.</li>
+          </ul>
+        </div>
+
+        <div class="exp-item">
+          <div class="exp-header">
+            <span class="exp-title">Data Analyst Intern</span>
+            <span class="exp-date">Jun 2023 – Aug 2023</span>
+          </div>
+          <p class="exp-company">Get9nine Soft Private Ltd</p>
+          <ul class="exp-bullets">
+            <li>Built a multiclass sensor classification system using Scikit-learn (KNN, SVM, Random Forest) on IoT sensor data, achieving 88% accuracy for automated food quality inspection.</li>
+            <li>Collaborated across a three-member team on data collection, preprocessing, feature extraction, and classification pipeline development.</li>
+          </ul>
+        </div>
+
+        <div class="exp-item">
+          <div class="exp-header">
+            <span class="exp-title">Content Analytics Lead</span>
+            <span class="exp-date">Jul 2022 – May 2023</span>
+          </div>
+          <p class="exp-company">Chords & Co.</p>
+          <ul class="exp-bullets">
+            <li>Ran A/B tests on content formats and posting schedules using Instagram Insights, growing the account 40% in three months.</li>
+            <li>Built a weekly performance tracking cadence across reach, engagement, and impressions — pushing average post reach up 60%.</li>
+          </ul>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <section id="projects">
+    <div class="container">
+      <p class="section-label">Projects</p>
+      <div class="projects-grid">
+
+        <div class="project-card">
+          <div class="project-top">
+            <span class="project-title">Financial Complaint Resolution System</span>
+            <span class="project-date">Apr 2026</span>
+          </div>
+          <p class="project-desc">Built a 3-agent AI pipeline using the Anthropic API to automate financial complaint processing — classifying, routing, and drafting regulatory-compliant responses across 49,332 CFPB complaints with zero manual triage.</p>
+          <div class="project-tags">
+            <span class="project-tag">Anthropic API</span>
+            <span class="project-tag">Multi-agent AI</span>
+            <span class="project-tag">Python</span>
+            <span class="project-tag">NLP</span>
+          </div>
+        </div>
+
+        <div class="project-card">
+          <div class="project-top">
+            <span class="project-title">Predictive Modeling for Short-Term Rental Quality</span>
+            <span class="project-date">Mar 2026</span>
+          </div>
+          <p class="project-desc">Engineered 100+ features from structured listing data and text columns, benchmarked 6 classifier families, and achieved an AUC of 0.8214 with LightGBM — finishing 8th of 35 teams.</p>
+          <div class="project-tags">
+            <span class="project-tag">LightGBM</span>
+            <span class="project-tag">Feature Engineering</span>
+            <span class="project-tag">Scikit-learn</span>
+            <span class="project-tag">NLP / TF-IDF</span>
+          </div>
+        </div>
+
+        <div class="project-card">
+          <div class="project-top">
+            <span class="project-title">Data Management for Indoor Skydiving Company</span>
+            <span class="project-date">2024</span>
+          </div>
+          <p class="project-desc">Designed and implemented an end-to-end data management solution including ETL processing, visualization, and reporting for an indoor skydiving operations company.</p>
+          <div class="project-tags">
+            <span class="project-tag">ETL</span>
+            <span class="project-tag">Visualization</span>
+            <span class="project-tag">Reporting</span>
+          </div>
+        </div>
+
+        <div class="project-card">
+          <div class="project-top">
+            <span class="project-title">IoT Sensor Classification System</span>
+            <span class="project-date">2023</span>
+          </div>
+          <p class="project-desc">Built a multiclass classification system for Bosch BME688 IoT sensor data using KNN, SVM, and Random Forest, achieving 88% accuracy for automated food quality inspection applications.</p>
+          <div class="project-tags">
+            <span class="project-tag">Scikit-learn</span>
+            <span class="project-tag">IoT</span>
+            <span class="project-tag">Classification</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <section id="education">
+    <div class="container">
+      <p class="section-label">Education</p>
+      <div class="edu-list">
+        <div class="edu-item">
+          <div class="edu-header">
+            <span class="edu-degree">MS, Information Systems — GPA 3.95</span>
+            <span class="edu-date">Aug 2025 – Dec 2026</span>
+          </div>
+          <p class="edu-school">University of Maryland, Robert H. Smith School of Business · College Park, MD</p>
+          <p class="edu-detail">Terrapin Scholar · Data Mining, Cloud Computing, AI Systems, Python, Project Management</p>
+        </div>
+        <div class="edu-item">
+          <div class="edu-header">
+            <span class="edu-degree">BTech, Computer Science & Engineering — GPA 3.41</span>
+            <span class="edu-date">Oct 2020 – Jul 2024</span>
+          </div>
+          <p class="edu-school">Manipal Institute of Technology · Manipal, India</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact">
+    <div class="container">
+      <p class="section-label">Contact</p>
+      <div class="contact-inner">
+        <div class="contact-text">
+          <h2>Let's work together.</h2>
+          <p>Open to full-time roles, internships, and interesting problems.</p>
+        </div>
+        <div class="contact-links">
+          <a href="mailto:venkat14@umd.edu" class="btn">Email</a>
+          <a href="https://www.linkedin.com/in/venkat-gollangi/" target="_blank" class="btn">LinkedIn</a>
+          <a href="https://github.com/venkat1404" target="_blank" class="btn">GitHub</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      <p>© 2026 Venkat Gollangi</p>
+      <p>Built with HTML & CSS</p>
+    </div>
+  </footer>
+
+</body>
+</html>
