@@ -6,7 +6,7 @@ type IconProps = LucideProps & {
 };
 
 // Wrapper around Lucide that enforces the 1.5px stroke house style per spec §6.
-// Also defaults aria-hidden — pass an `aria-label` explicitly when decorative
+// Also defaults aria-hidden - pass an `aria-label` explicitly when decorative
 // is not the intent.
 export function Icon({
   icon: LucideComp,

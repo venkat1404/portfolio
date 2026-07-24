@@ -26,9 +26,9 @@ export default function ResumePage() {
               The one-page version.
             </h1>
             <p className="mb-10 max-w-[560px] text-md leading-relaxed text-secondary">
-              Data Engineer resume — Accordion India work, UMD MS Information
-              Systems, featured projects, and skills. Also available inline
-              below.
+              Data Engineer resume covering Accordion India work, UMD MS
+              Information Systems, featured projects, and skills. Also
+              available inline below.
             </p>
 
             <Button variant="primary" href={site.resumeUrl}>

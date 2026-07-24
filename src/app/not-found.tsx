@@ -13,7 +13,7 @@ export default function NotFound() {
         That page took a wrong turn.
       </h1>
       <p className="mb-8 text-lg leading-relaxed text-secondary">
-        The route doesn&apos;t exist — probably a typo in the URL, or a link
+        The route doesn&apos;t exist. Probably a typo in the URL, or a link
         pointing somewhere I&apos;ve since renamed. Try one of these instead.
       </p>
       <div className="flex flex-wrap gap-3">

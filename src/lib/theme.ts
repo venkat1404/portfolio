@@ -27,7 +27,7 @@ export const themeScript = `
     }
     document.documentElement.style.colorScheme = theme;
   } catch (e) {
-    // Fail silently — dark class is on by default in the SSR output.
+    // Fail silently - dark class is on by default in the SSR output.
   }
 })();
 `;

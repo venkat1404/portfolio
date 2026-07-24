@@ -6,7 +6,7 @@ type StatusDotProps = {
   className?: string;
 };
 
-// Small colored dot — used in the hero eyebrow to signal availability.
+// Small colored dot - used in the hero eyebrow to signal availability.
 // `pulse` adds a gentle animation that respects reduced-motion via globals.
 export function StatusDot({
   tone = "success",

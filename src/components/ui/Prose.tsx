@@ -1,8 +1,8 @@
 import type { ReactNode } from "react";
 import { cn } from "@/lib/cn";
 
-// MDX case-study body wrapper. All prose typography lives here — headings,
-// links, lists, code blocks — so case studies render consistently.
+// MDX case-study body wrapper. All prose typography lives here - headings,
+// links, lists, code blocks - so case studies render consistently.
 export function Prose({
   children,
   className,

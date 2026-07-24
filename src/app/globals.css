@@ -90,14 +90,14 @@ body {
   font-variant-numeric: tabular-nums;
 }
 
-/* Focus rings — designed, not browser default. */
+/* Focus rings - designed, not browser default. */
 :focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 3px;
   border-radius: var(--radius-sm);
 }
 
-/* Skip link — visible on focus, hidden otherwise. */
+/* Skip link - visible on focus, hidden otherwise. */
 .skip-link {
   position: absolute;
   top: -100%;

@@ -58,15 +58,15 @@ export default function StyleguidePage() {
           </p>
           <p className="text-2xl font-semibold text-foreground">Heading 2xl</p>
           <p className="text-xl font-medium text-foreground">Heading xl</p>
-          <p className="text-lg text-foreground">Body large — 18px</p>
+          <p className="text-lg text-foreground">Body large · 18px</p>
           <p className="text-md text-secondary">
-            Body md — 17px, secondary color. Used for paragraphs where warmth
+            Body md · 17px, secondary color. Used for paragraphs where warmth
             matters more than density.
           </p>
           <p className="text-body text-secondary">
-            Body base — 16px, secondary color.
+            Body base · 16px, secondary color.
           </p>
-          <p className="text-sm text-muted">Small text — 13px, muted.</p>
+          <p className="text-sm text-muted">Small text · 13px, muted.</p>
           <p className="font-mono text-xs uppercase tracking-widest text-muted">
             Mono uppercase micro
           </p>
@@ -174,8 +174,8 @@ export default function StyleguidePage() {
             <h2>A representative section heading</h2>
             <p>
               Regular paragraph copy. Case studies live inside this component,
-              so all typography — links, lists, inline{" "}
-              <code>code</code>, headings — reads consistently.
+              so all typography (links, lists, inline{" "}
+              <code>code</code>, headings) reads consistently.
             </p>
             <h3>Sub-heading</h3>
             <p>

@@ -2,7 +2,7 @@ import type { Education } from "./types";
 
 export const education: Education[] = [
   {
-    institution: "University of Maryland — Robert H. Smith School of Business",
+    institution: "University of Maryland · Robert H. Smith School of Business",
     location: "College Park, MD",
     degree: "M.S., Information Systems",
     gpa: "3.95",

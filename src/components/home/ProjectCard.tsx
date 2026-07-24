@@ -24,7 +24,7 @@ export function ProjectCard({ project, layout = "vertical" }: ProjectCardProps) 
         layout === "horizontal" && "md:grid md:grid-cols-2",
       )}
     >
-      {/* Cover / visual placeholder — Phase 7 replaces with real architecture SVG */}
+      {/* Cover / visual placeholder - Phase 7 replaces with real architecture SVG */}
       <div
         aria-hidden
         className={cn(

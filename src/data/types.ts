@@ -1,5 +1,5 @@
 // Shared types for all content data modules.
-// These are pure data types — no framework dependencies — so they can be
+// These are pure data types - no framework dependencies - so they can be
 // consumed by both server components (App Router) and MDX frontmatter validators.
 
 export type ProjectSlug =
@@ -62,7 +62,7 @@ export type Certification = {
   date?: string;
   credentialId?: string;
   credentialUrl?: string;
-  /** One-line context — why it matters. Required for in-progress items. */
+  /** One-line context - why it matters. Required for in-progress items. */
   context?: string;
 };
 
@@ -95,7 +95,7 @@ export type Project = {
   liveDemoUrl?: string;
   /** Position in the featured list on the home page. Absent = not featured. */
   featured?: 1 | 2 | 3 | 4;
-  /** Team size and role — required for team projects, "Solo" for solo. */
+  /** Team size and role - required for team projects, "Solo" for solo. */
   attribution: {
     role: "Solo" | string;
     teamSize?: number;

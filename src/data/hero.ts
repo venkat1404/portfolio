@@ -4,11 +4,11 @@
 export const hero = {
   eyebrow: {
     statusDot: true, // renders a small green dot to signal availability
-    text: "Available for full-time roles (Dec 2026) & summer 2026 internships · College Park, MD",
+    text: "Available for Fall 2026 co-op · Jan 2027 full-time & internship · College Park, MD",
   },
   headline: "I build data pipelines and analytics that earn their keep.",
   subline:
-    "Data Engineer with production ETL experience across HubSpot, Google Analytics, and UKG at Accordion — accelerating downstream reporting 40% and cutting manual work 20+ hours a month.",
+    "Data Engineer with production ETL experience across HubSpot, Google Analytics, and UKG at Accordion, accelerating downstream reporting 40% and cutting manual work 20+ hours a month.",
   primaryCta: {
     label: "View projects",
     href: "#projects",

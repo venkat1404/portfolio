@@ -5,7 +5,7 @@ import type { ExploringEntry } from "./types";
 // target Data Engineer / BI Engineer / Data Analyst roles.
 export const exploring: ExploringEntry[] = [
   {
-    title: "AWS Certified Data Engineer — Associate",
+    title: "AWS Certified Data Engineer, Associate",
     status: "Preparing · exam August 2026",
     why: "The gap between SSIS-on-Azure work at Accordion and modern cloud-native pipelines (Glue, Kinesis, Redshift) is the biggest single thing to close before graduation.",
     iconKey: "cloud",

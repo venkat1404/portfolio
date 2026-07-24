@@ -1,8 +1,8 @@
 import type { Skill } from "./types";
 
 // Grouped by capability (spec §5.2 point 5). Each skill links to the project
-// or experience that proves it. Skills without evidence do not appear here —
-// this is a proof layer, not a claim layer.
+// or experience that proves it. Skills without evidence do not appear here.
+// This is a proof layer, not a claim layer.
 //
 // Categories (spec-mandated 6):
 //   Data Engineering & Pipelines / Analytics & BI / Programming & Databases

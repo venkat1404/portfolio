@@ -24,7 +24,7 @@ export function SkillsGrid() {
       <SectionHeading
         eyebrow="Skills"
         title="Grouped by what they get used for."
-        description="Every skill listed here has a project or a job behind it — no floating claims."
+        description="Every skill listed here has a project or a job behind it. No floating claims."
       />
 
       <div className="grid grid-cols-1 gap-x-10 gap-y-10 md:grid-cols-2">

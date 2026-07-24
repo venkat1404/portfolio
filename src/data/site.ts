@@ -12,11 +12,11 @@ export const site: SiteMeta = {
   githubUrl: "https://github.com/venkat1404",
   resumeUrl: "/resume.pdf",
   availability:
-    "Open to full-time Data Engineer, BI Engineer, and Data Analyst roles starting December 2026 — and summer 2026 internships.",
+    "Available for Fall 2026 co-op and January 2027 full-time or internship roles.",
   workAuthorization: "Authorized to work in the USA",
 };
 
-// Target role list — used in hero subline keyword optimization and SEO.
+// Target role list - used in hero subline keyword optimization and SEO.
 export const targetRoles = [
   "Data Engineer",
   "BI Engineer",
@@ -29,7 +29,7 @@ export const targetRoles = [
 // Default SEO metadata. Per-route overrides live in each route's layout/page.
 export const seo = {
   titleTemplate: "%s · Venkat Gollangi",
-  defaultTitle: "Venkat Gollangi — Data Engineer & Analytics Engineer",
+  defaultTitle: "Venkat Gollangi · Data Engineer & Analytics Engineer",
   defaultDescription:
     "MS Information Systems at UMD Smith (GPA 3.95, Terrapin Scholar). Built production ETL pipelines at Accordion India, multi-agent AI systems on the Anthropic API, and ML models placing 8th of 35 teams on Kaggle-style leaderboards.",
   ogImageUrl: "/og/default.png",

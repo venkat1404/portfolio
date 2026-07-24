@@ -1,7 +1,7 @@
 import type { ExperienceEntry } from "./types";
 
 // Ordered newest-first. Every bullet is outcome-led (result first, mechanism second).
-// Copy is adapted from the resume — same facts, tightened for scannability.
+// Copy is adapted from the resume - same facts, tightened for scannability.
 export const experience: ExperienceEntry[] = [
   {
     company: "Accordion India",
@@ -49,7 +49,7 @@ export const experience: ExperienceEntry[] = [
   },
   {
     // NOTE: Resume categorizes Chords & Co. under "Leadership and Volunteer Experience."
-    // I've placed it in Experience per v1 pattern — the A/B testing + analytics work is
+    // I've placed it in Experience per v1 pattern - the A/B testing + analytics work is
     // legitimately data-relevant. Flagged in CONTENT_GAPS.md §7 for approval.
     company: "Chords & Co.",
     roles: [

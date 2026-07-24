@@ -2,8 +2,8 @@
  * Dark mode is default. Light mode is a fully-designed alternate, not an inversion.
  *
  * Structure:
- *   :root       — light theme (also the light-mode fallback if class is missing)
- *   .dark       — dark theme overrides
+ *   :root       - light theme (also the light-mode fallback if class is missing)
+ *   .dark       - dark theme overrides
  *   @theme inline in globals.css binds these to Tailwind v4 utility names
  */
 
@@ -89,7 +89,7 @@
   --radius-xl: 20px;
   --radius-full: 9999px;
 
-  /* ─── Shadows (subtle — depth via layering + borders, not heavy shadow) ─── */
+  /* ─── Shadows (subtle - depth via layering + borders, not heavy shadow) ─── */
   --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.04);
   --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.06);
   --shadow-lg: 0 12px 32px rgba(0, 0, 0, 0.08);

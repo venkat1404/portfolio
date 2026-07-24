@@ -25,7 +25,7 @@ export async function generateMetadata({
   const project = projects.find((p) => p.slug === slug);
   if (!project) return {};
   return {
-    title: `${project.title} — Case Study`,
+    title: `${project.title} · Case Study`,
     description: project.description.slice(0, 155),
   };
 }
@@ -129,7 +129,7 @@ export default async function CaseStudyPage({
           </Container>
         </section>
 
-        {/* Results — surfaced high because it's the highest-value skim block */}
+        {/* Results - surfaced high because it's the highest-value skim block */}
         <section className="border-b border-border py-16 md:py-20">
           <Container>
             <p className="mb-6 font-mono text-xs uppercase tracking-widest text-muted">
@@ -148,7 +148,7 @@ export default async function CaseStudyPage({
           </Container>
         </section>
 
-        {/* Body — placeholder until Phase 7 lands MDX case study */}
+        {/* Body - placeholder until Phase 7 lands MDX case study */}
         <section className="py-16 md:py-24">
           <Container size="prose">
             <p className="mb-4 font-mono text-xs uppercase tracking-widest text-muted">
@@ -163,9 +163,9 @@ export default async function CaseStudyPage({
                 Coming in Phase 7
               </p>
               <p className="mt-2 text-sm leading-relaxed text-secondary">
-                Full case study — Problem · Business context · Data sources ·
-                Architecture (SVG) · Technical stack · Approach · Challenges ·
-                Business impact · Lessons learned · Future improvements — lands
+                Full case study (Problem · Business context · Data sources ·
+                Architecture · Technical stack · Approach · Challenges ·
+                Business impact · Lessons learned · Future improvements) lands
                 as an MDX file at{" "}
                 <code className="rounded bg-surface px-1.5 py-0.5 font-mono text-[0.9em]">
                   /content/projects/{project.slug}.mdx
