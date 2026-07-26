@@ -3,6 +3,7 @@ import { Cloud, LineChart, Sparkles } from "lucide-react";
 import { exploring } from "@/data/exploring";
 import { Section } from "@/components/layout/Section";
 import { SectionHeading } from "@/components/ui/SectionHeading";
+import { Reveal } from "@/components/motion/Reveal";
 
 const iconMap: Record<string, LucideIcon> = {
   cloud: Cloud,
@@ -20,11 +21,13 @@ export function CurrentlyExploring() {
       />
 
       <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-        {exploring.map((entry) => {
+        {exploring.map((entry, i) => {
           const Icon = iconMap[entry.iconKey] ?? Sparkles;
           return (
-            <article
+            <Reveal
               key={entry.title}
+              as="article"
+              delay={i * 0.06}
               className="flex flex-col gap-4 rounded-[var(--radius-lg)] border border-border bg-surface p-6"
             >
               <span
@@ -44,7 +47,7 @@ export function CurrentlyExploring() {
               <p className="text-sm leading-relaxed text-secondary">
                 {entry.why}
               </p>
-            </article>
+            </Reveal>
           );
         })}
       </div>
