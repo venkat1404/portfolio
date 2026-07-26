@@ -17,6 +17,7 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(seo.siteUrl),
   title: {
     default: seo.defaultTitle,
     template: seo.titleTemplate,

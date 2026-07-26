@@ -32,5 +32,5 @@ export const seo = {
   defaultTitle: "Venkat Gollangi · Data Engineer & Analytics Engineer",
   defaultDescription:
     "MS Information Systems at UMD Smith (GPA 3.95, Terrapin Scholar). Built production ETL pipelines at Accordion India, multi-agent AI systems on the Anthropic API, and ML models placing 8th of 35 teams on Kaggle-style leaderboards.",
-  ogImageUrl: "/og/default.png",
+  siteUrl: "https://venkatagollangi.netlify.app",
 } as const;
