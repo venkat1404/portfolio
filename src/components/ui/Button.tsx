@@ -21,7 +21,8 @@ type ButtonAsButton = CommonProps &
 
 type ButtonAsLink = CommonProps & {
   href: string;
-  download?: boolean;
+  /** Pass a string to override the downloaded filename (browser default is the URL basename). */
+  download?: boolean | string;
 };
 
 export type ButtonProps = ButtonAsButton | ButtonAsLink;

@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import { projects } from "@/data/projects";
 import { Nav } from "@/components/layout/Nav";
 import { Footer } from "@/components/layout/Footer";
 import { Section } from "@/components/layout/Section";
 import { SectionHeading } from "@/components/ui/SectionHeading";
-import { ProjectCard } from "@/components/home/ProjectCard";
+import { ProjectsGrid } from "@/components/project/ProjectsGrid";
 
 export const metadata: Metadata = {
   title: "Projects",
@@ -31,14 +32,26 @@ export default function ProjectsPage() {
           <SectionHeading
             eyebrow="Projects"
             title="All the work I'd point a hiring manager at."
-            description="Case studies with real metrics, honest attributions, and architecture diagrams. Filter chips land in Phase 9."
+            description="Filter by capability, or scroll through everything."
           />
 
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-            {orderedProjects.map((p) => (
-              <ProjectCard key={p.slug} project={p} />
-            ))}
-          </div>
+          <Suspense
+            fallback={
+              <div
+                className="grid grid-cols-1 gap-6 md:grid-cols-2"
+                aria-hidden
+              >
+                {orderedProjects.map((p) => (
+                  <div
+                    key={p.slug}
+                    className="h-[420px] animate-pulse rounded-[var(--radius-lg)] border border-border bg-surface"
+                  />
+                ))}
+              </div>
+            }
+          >
+            <ProjectsGrid projects={orderedProjects} />
+          </Suspense>
         </Section>
       </main>
       <Footer />

@@ -27,7 +27,11 @@ export function Hero() {
             {hero.primaryCta.label}
             <ArrowDown aria-hidden strokeWidth={1.5} className="size-3.5" />
           </Button>
-          <Button variant="secondary" href={hero.secondaryCta.href}>
+          <Button
+            variant="secondary"
+            href={hero.secondaryCta.href}
+            download="Venkat_Resume.pdf"
+          >
             <Download aria-hidden strokeWidth={1.5} className="size-3.5" />
             {hero.secondaryCta.label}
           </Button>

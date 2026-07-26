@@ -30,7 +30,11 @@ export function ContactCta() {
             <Github aria-hidden strokeWidth={1.5} className="size-3.5" />
             GitHub
           </Button>
-          <Button variant="secondary" href={site.resumeUrl}>
+          <Button
+            variant="secondary"
+            href={site.resumeUrl}
+            download="Venkat_Resume.pdf"
+          >
             <Download aria-hidden strokeWidth={1.5} className="size-3.5" />
             Resume
           </Button>

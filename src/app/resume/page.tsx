@@ -31,7 +31,11 @@ export default function ResumePage() {
               available inline below.
             </p>
 
-            <Button variant="primary" href={site.resumeUrl}>
+            <Button
+              variant="primary"
+              href={site.resumeUrl}
+              download="Venkat_Resume.pdf"
+            >
               <Download aria-hidden strokeWidth={1.5} className="size-3.5" />
               Download PDF
             </Button>

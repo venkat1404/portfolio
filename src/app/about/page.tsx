@@ -42,7 +42,11 @@ export default function AboutPage() {
               <Button variant="primary" href={`mailto:${site.email}`}>
                 Get in touch
               </Button>
-              <Button variant="secondary" href={site.resumeUrl}>
+              <Button
+                variant="secondary"
+                href={site.resumeUrl}
+                download="Venkat_Resume.pdf"
+              >
                 Download resume
               </Button>
             </div>
