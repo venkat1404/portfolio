@@ -5,31 +5,47 @@ import { Container } from "@/components/layout/Container";
 import { Button } from "@/components/ui/Button";
 import { StatusDot } from "@/components/ui/StatusDot";
 import { HeroReveal } from "@/components/motion/HeroReveal";
+import { WordsReveal } from "@/components/motion/WordsReveal";
+
+// Timing plan (spec §9 — above-the-fold sequence completes visually within ~1s):
+//   eyebrow      0.00s
+//   headline     0.10s + per-word stagger 0.16s
+//   subline      0.65s (after the last headline word starts)
+//   CTA row      0.78s
+const T_EYEBROW = 0;
+const T_HEADLINE_START = 0.1;
+const T_HEADLINE_STAGGER = 0.16;
+const T_SUBLINE = 0.65;
+const T_CTAS = 0.78;
 
 export function Hero() {
   return (
     <section className="pt-14 md:pt-24 lg:pt-32 pb-16 md:pb-20 lg:pb-24">
       <Container>
-        <HeroReveal delay={0}>
+        <HeroReveal delay={T_EYEBROW}>
           <p className="mb-6 flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-secondary">
             <StatusDot />
             {hero.eyebrow.text}
           </p>
         </HeroReveal>
 
-        <HeroReveal delay={0.08}>
-          <h1 className="mb-6 max-w-[820px] text-5xl md:text-6xl font-semibold tracking-tight text-foreground [text-wrap:balance]">
+        <h1 className="mb-6 max-w-[820px] text-6xl md:text-[5.5rem] lg:text-[6.5rem] font-semibold tracking-tight text-foreground leading-[1.02] [text-wrap:balance]">
+          <WordsReveal
+            delayStart={T_HEADLINE_START}
+            stagger={T_HEADLINE_STAGGER}
+            duration={0.55}
+          >
             {hero.headline}
-          </h1>
-        </HeroReveal>
+          </WordsReveal>
+        </h1>
 
-        <HeroReveal delay={0.16}>
+        <HeroReveal delay={T_SUBLINE}>
           <p className="mb-10 max-w-[620px] text-lg leading-relaxed text-secondary">
             {hero.subline}
           </p>
         </HeroReveal>
 
-        <HeroReveal delay={0.24}>
+        <HeroReveal delay={T_CTAS}>
           <div className="flex flex-wrap items-center gap-3">
             <Button variant="primary" href={hero.primaryCta.href}>
               {hero.primaryCta.label}

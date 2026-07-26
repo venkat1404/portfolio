@@ -59,19 +59,23 @@ export default function Image() {
           style={{
             display: "flex",
             flexDirection: "column",
-            gap: 24,
+            gap: 28,
           }}
         >
           <div
             style={{
-              fontSize: 72,
+              display: "flex",
+              flexDirection: "column",
+              fontSize: 128,
               fontWeight: 600,
-              lineHeight: 1.1,
-              letterSpacing: "-0.02em",
+              lineHeight: 1.02,
+              letterSpacing: "-0.03em",
               maxWidth: 1000,
             }}
           >
-            {hero.headline}
+            {hero.headline.split(" ").map((word) => (
+              <span key={word}>{word}</span>
+            ))}
           </div>
           <div
             style={{
