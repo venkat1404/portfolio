@@ -7,10 +7,17 @@ import { Nav } from "@/components/layout/Nav";
 import { Footer } from "@/components/layout/Footer";
 import { Container } from "@/components/layout/Container";
 import { Chip } from "@/components/ui/Chip";
-import { MetricStat } from "@/components/ui/MetricStat";
 import { Button } from "@/components/ui/Button";
+import { Prose } from "@/components/ui/Prose";
 
 type Params = { slug: string };
+
+// Slugs that have an MDX case study body. Others fall back to a placeholder.
+const CASE_STUDIES = new Set([
+  "financial-complaint-resolution",
+  "short-term-rental-quality",
+  "healthcare-fraud-detection",
+]);
 
 export function generateStaticParams(): Params[] {
   return projects.map((p) => ({ slug: p.slug }));
@@ -30,6 +37,12 @@ export async function generateMetadata({
   };
 }
 
+async function loadCaseStudy(slug: string) {
+  if (!CASE_STUDIES.has(slug)) return null;
+  const mod = await import(`@/../content/projects/${slug}.mdx`);
+  return mod.default as React.ComponentType;
+}
+
 export default async function CaseStudyPage({
   params,
 }: {
@@ -39,12 +52,13 @@ export default async function CaseStudyPage({
   const project = projects.find((p) => p.slug === slug);
   if (!project) notFound();
 
+  const CaseStudyBody = await loadCaseStudy(project.slug);
+
   const orderedFeatured = projects
     .filter((p) => p.featured)
     .sort((a, b) => (a.featured ?? 99) - (b.featured ?? 99));
   const currentIndex = orderedFeatured.findIndex((p) => p.slug === project.slug);
-  const prev =
-    currentIndex > 0 ? orderedFeatured[currentIndex - 1] : null;
+  const prev = currentIndex > 0 ? orderedFeatured[currentIndex - 1] : null;
   const next =
     currentIndex >= 0 && currentIndex < orderedFeatured.length - 1
       ? orderedFeatured[currentIndex + 1]
@@ -129,50 +143,38 @@ export default async function CaseStudyPage({
           </Container>
         </section>
 
-        {/* Results - surfaced high because it's the highest-value skim block */}
-        <section className="border-b border-border py-16 md:py-20">
-          <Container>
-            <p className="mb-6 font-mono text-xs uppercase tracking-widest text-muted">
-              Results
-            </p>
-            <div className="grid grid-cols-2 gap-6 md:grid-cols-4">
-              {project.metrics.map((m, i) => (
-                <MetricStat
-                  key={m.value + i}
-                  value={m.value}
-                  label={m.label}
-                  emphasis={i === 0}
-                />
-              ))}
-            </div>
-          </Container>
-        </section>
-
-        {/* Body - placeholder until Phase 7 lands MDX case study */}
+        {/* Case study body */}
         <section className="py-16 md:py-24">
           <Container size="prose">
-            <p className="mb-4 font-mono text-xs uppercase tracking-widest text-muted">
-              Overview
-            </p>
-            <p className="text-lg leading-relaxed text-secondary">
-              {project.description}
-            </p>
+            {CaseStudyBody ? (
+              <Prose>
+                <CaseStudyBody />
+              </Prose>
+            ) : (
+              <>
+                <p className="mb-4 font-mono text-xs uppercase tracking-widest text-muted">
+                  Overview
+                </p>
+                <p className="text-lg leading-relaxed text-secondary">
+                  {project.description}
+                </p>
 
-            <div className="mt-16 rounded-[var(--radius-lg)] border border-dashed border-border-strong p-6">
-              <p className="font-mono text-xs uppercase tracking-widest text-muted">
-                Coming in Phase 7
-              </p>
-              <p className="mt-2 text-sm leading-relaxed text-secondary">
-                Full case study (Problem · Business context · Data sources ·
-                Architecture · Technical stack · Approach · Challenges ·
-                Business impact · Lessons learned · Future improvements) lands
-                as an MDX file at{" "}
-                <code className="rounded bg-surface px-1.5 py-0.5 font-mono text-[0.9em]">
-                  /content/projects/{project.slug}.mdx
-                </code>
-                . Outline already drafted in the repo.
-              </p>
-            </div>
+                <div className="mt-16 rounded-[var(--radius-lg)] border border-dashed border-border-strong p-6">
+                  <p className="font-mono text-xs uppercase tracking-widest text-muted">
+                    No case study yet
+                  </p>
+                  <p className="mt-2 text-sm leading-relaxed text-secondary">
+                    This project is listed on{" "}
+                    <Link href="/projects" className="text-accent underline">
+                      /projects
+                    </Link>{" "}
+                    with the source repo linked. A full case study lives on the
+                    three featured projects; the README on GitHub covers this
+                    one directly.
+                  </p>
+                </div>
+              </>
+            )}
           </Container>
         </section>
 

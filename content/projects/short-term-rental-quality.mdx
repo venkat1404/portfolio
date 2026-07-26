@@ -1,0 +1,90 @@
+import { TldrCard } from "@/components/project/TldrCard";
+import { ArchitectureFigure } from "@/components/project/ArchitectureFigure";
+import { ResultsGrid } from "@/components/project/ResultsGrid";
+import { RentalPipelineDiagram } from "@/components/project/diagrams/RentalPipelineDiagram";
+
+<TldrCard
+  problem="Predict which short-term rental listings earn a perfect rating score from structured listing data plus free-text descriptions."
+  solution="100+ engineered features, TF-IDF text compression, and a nested-CV bake-off across six model families, won by LightGBM."
+  result="AUC 0.8214 on blind test, up from a 0.7511 baseline. Finished 8th of 35 teams in the UMD Data Mining course competition."
+/>
+
+## Overview
+
+BUDT 733 (Data Mining, Spring 2026) ran a semester project as a Kaggle-style competition: 35 teams, a train and blind test set of short-term rental listings, binary target (`perfect_rating_score`), scored on AUC. Our three-person team focused on feature engineering more than model exotica, and it turned out to be the right bet.
+
+## Problem
+
+The features that come out of the box (price, room type, location) get you to about AUC 0.75 with a decent gradient boosted tree. The competition question was really: what features can you _make_ that the raw data doesn't provide? Per-person price. Amenity presence flags. Host tenure. Time since last review. Signal from listing descriptions.
+
+## Business context
+
+Beyond the class competition, this is the same modeling job vacation-rental platforms hire for. Pricing, ranking, host onboarding, and fraud detection all sit on top of a quality-prediction backbone. Treating the school project like a real product problem shaped every decision we made.
+
+## Data sources
+
+- `airbnb_train_x_2026.csv` (features)
+- `airbnb_train_y_2026.csv` (binary labels)
+- `airbnb_test_x_2026.csv` (blind test set)
+- External cost-of-living index for geographic price context
+
+## Approach
+
+We built up 100+ engineered features on top of the raw columns. The list looked something like this:
+
+- **Money normalization.** `$1,234.00` string columns parsed to floats; percent strings (`95%`) parsed to floats.
+- **Skew handling.** Log transforms on right-skewed price columns.
+- **Amenity extraction.** 15+ binary flags for specific amenities (wifi, kitchen, AC, heating, washer, dryer, etc.). More useful than a raw amenities count.
+- **Per-person price ratios.** `price / accommodates` and `(price + cleaning_fee) / accommodates`. A $300 listing for 8 is a very different product from $300 for 1.
+- **Presence flags.** `has_cleaning_fee`, `has_security_deposit`, `has_weekly_price`. Presence itself signaled host professionalism.
+- **Date-derived features.** Host tenure in days, listing age, days since last review.
+- **Text compression.** TF-IDF over three text columns, reduced to 25 SVD components.
+- **Target-encoded categoricals** for high-cardinality neighborhood columns, with rare-category collapse.
+- **KMeans clustering** on numeric features to generate unsupervised listing-type labels.
+- **Interaction terms.** `price × accommodates`, `amenities_count × log(price)`, `host_experience × response_rate`.
+
+## Architecture
+
+<ArchitectureFigure caption="Raw CSVs to feature engineering to nested CV over six model families. LightGBM wins.">
+  <RentalPipelineDiagram />
+</ArchitectureFigure>
+
+## Model selection
+
+Nested holdout with 5-fold inner CV. The outer 20% never touches hyperparameter selection. Grid search across `num_leaves` and `learning_rate` for LightGBM, AUC-focused tuning with three rounds of early stopping.
+
+The interesting side finding: logistic regression was competitive with some tree ensembles once the features were well-engineered. That is exactly the kind of thing that generalizes; the harder problem is almost always upstream of the modeling.
+
+## Challenges
+
+**Class balance.** The target distribution is uneven. Straight accuracy would have been misleading — a model can score high by always predicting the majority class. We stayed on AUC throughout so nothing hid behind that.
+
+**High-cardinality neighborhoods.** Naive one-hot encoding blows up dimensionality with hundreds of neighborhood values. Target encoding plus a rare-category collapse (`min_count=300`) was the pragmatic fix, and worth more AUC than any hyperparameter tuning.
+
+**Text columns.** Three free-text fields. Raw transformer embeddings were heavier than we needed. TF-IDF to a 25-component SVD was the compromise: it captures descriptive signal without adding meaningful serving cost.
+
+## Results
+
+<ResultsGrid
+  metrics={[
+    { value: "AUC 0.8214", label: "8th of 35 teams" },
+    { value: "+0.07", label: "AUC lift over 0.7511 baseline" },
+    { value: "100+", label: "engineered features" },
+    { value: "6", label: "classifier families benchmarked" },
+  ]}
+/>
+
+## Lessons learned
+
+**Feature engineering moved the needle far more than model choice.** This was our team's headline finding, and it generalizes. A well-shaped feature set made a plain logistic regression beat some tuned tree ensembles.
+
+**Logistic regression is a real baseline, not a joke.** Anyone dismissing it as too simple is skipping a diagnostic that tells you how much of your task is actually about features vs. non-linearity.
+
+**Nested CV is worth the compute.** It's the only clean way to select a model and estimate its performance without leakage. Cheaper to run it once and trust the number than to keep second-guessing a flat holdout.
+
+## Future improvements
+
+- Stacked ensemble (LightGBM plus logistic regression plus one more) — likely +0.01–0.02 AUC.
+- Sentence-transformer embeddings for listing descriptions instead of TF-IDF + SVD.
+- SHAP for per-listing explanations. Useful if this model ever ships as a ranking signal, so operators know which features drove a low score.
+- Probability calibration so scores are usable as a ranking signal, not just a classification threshold.

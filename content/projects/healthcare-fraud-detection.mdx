@@ -1,0 +1,111 @@
+import { TldrCard } from "@/components/project/TldrCard";
+import { ArchitectureFigure } from "@/components/project/ArchitectureFigure";
+import { ResultsGrid } from "@/components/project/ResultsGrid";
+import { FraudPipelineDiagram } from "@/components/project/diagrams/FraudPipelineDiagram";
+
+<TldrCard
+  problem="Healthcare fraud triage today is manual and static-rule-driven; it misses fraud, floods investigators with false positives, and slows payment."
+  solution="Provider-level fraud scoring (LogReg, RF, XGBoost), wired into a 5-tier decision-automation engine with responsible-AI guardrails and a 6-page Streamlit command center."
+  result="ROC-AUC 0.951 on the primary provider-level model. Fraud review restructured from unstructured triage into three risk-tiered queues."
+/>
+
+## Overview
+
+BUDT 751 (Spring 2026, seven-person team). Small and mid-sized health insurers, Medicaid administrators, and third-party claims processors identify suspicious claims through manual review and static rules today. That misses novel fraud patterns, over-flags legitimate providers, and slows payment on the flagged ones. We built a decision-support system — not a replacement — that scores providers and claims and hands prioritized cases to human investigators.
+
+## Problem
+
+Two failure modes we designed against.
+
+**Rule-based systems miss novel patterns.** Static rules encode fraud we've seen before. Fraudsters iterate.
+
+**Black-box ML denials burn trust.** Insurers can't legally auto-deny claims without human review. Any system that ignores that fails deployment before it ever ships. The guardrails have to sit in the routing layer, not in a policy PDF.
+
+## Business context
+
+Concrete stakeholders. A fraud investigator wants a prioritized queue and a per-case reason. A payments analyst wants a threshold they can defend to a regulator. A compliance lead wants the responsible-AI story documented. The Streamlit dashboard has different pages for each, because they're different jobs.
+
+## Data sources
+
+- **Primary.** Kaggle _Healthcare Provider Fraud Detection Analysis_. Beneficiary demographics, inpatient claims, outpatient claims, provider-level fraud labels — merged into a single provider view.
+- **Secondary.** A synthetic claim-level dataset used for Streamlit demo panels where entering realistic PHI would be inappropriate.
+
+Provider-level target: `PotentialFraud` (binary).
+
+## Feature engineering
+
+Fifteen-plus features aggregated to the provider level. Individual claims are noisy; provider aggregates catch the systemic patterns fraudsters emit across many claims.
+
+- Total claims count
+- Inpatient / outpatient claim counts
+- Average and total reimbursed claim amount
+- Average and total deductible amount
+- Unique beneficiaries per provider
+- Unique physicians per provider
+- Average claim duration
+- Average chronic-condition count per beneficiary
+- Average patient age
+- Percentage of claims with an admitted diagnosis code
+- Unique diagnosis and procedure codes
+
+## Architecture
+
+<ArchitectureFigure caption="Four sources merge into a provider view, feed a model bake-off, route through a 5-tier decision engine, and land in a 6-page Streamlit command center.">
+  <FraudPipelineDiagram />
+</ArchitectureFigure>
+
+## Technical choices, and why each one
+
+**Provider-level modeling over claim-level.** Claim noise wrecks recall. Provider aggregates surface the coordinated patterns that individual claims can hide.
+
+**Three-model bake-off with sklearn fallback.** XGBoost isn't always installable on constrained environments. Graceful degradation to sklearn's boosting matters if this ever runs on an insurer's actual infrastructure.
+
+**Threshold policy in code, not in a doc.** Three business thresholds (0.30, 0.50, 0.70) are configurable in the Streamlit UI. Compliance leads can tune them without a code deploy.
+
+**Human-review floors.** Any claim over $10,000, any prediction under 80% confidence, and any provider without prior fraud history all bypass auto-denial paths. These are enforced in the routing layer, not left to a policy document nobody reads.
+
+**Streamlit for the delivery layer.** Insurance analysts aren't going to install Jupyter. Streamlit gets them a real interface for the cost of not building a frontend. If the product ever ships, that layer gets rebuilt in React; the model plumbing behind it stays.
+
+## Evaluation
+
+Class imbalance in fraud detection is severe. Accuracy alone would be misleading. We reported accuracy, precision, recall, F1, ROC-AUC, confusion matrix, and top-flagged precision at operational thresholds.
+
+The primary provider-level Logistic Regression hit ROC-AUC 0.951. Random Forest and XGBoost were within a few points, and used for robustness rather than as the primary decision maker.
+
+## Results
+
+<ResultsGrid
+  metrics={[
+    { value: "ROC-AUC 0.951", label: "provider-level Logistic Regression" },
+    { value: "15+", label: "engineered provider features" },
+    { value: "5-tier", label: "decision automation engine" },
+    { value: "6 pages", label: "Streamlit command center" },
+  ]}
+/>
+
+## Responsible AI
+
+Non-negotiable for a healthcare case study. The difference between "I trained a model" and "I built a system a hospital could deploy" sits inside this section.
+
+**False positive cost.** Denied legit claims delay care and damage provider trust.
+
+**False negative cost.** Paid fraudulent claims eventually raise premiums for everyone.
+
+**Guardrails.** Ten-thousand-dollar floor, 80% confidence floor, no-history no-auto-denial. Enforced in the routing layer.
+
+**Explainability roadmap.** SHAP for per-provider explanations is in the future work list; investigators need to see what drove a flag, not just the flag itself.
+
+**Limitations acknowledged.** Kaggle labels reflect potential fraud, not final legal determinations. The synthetic secondary dataset doesn't capture real operational complexity. Real deployment would need drift monitoring, audit logging, and a policy owner.
+
+## Lessons learned
+
+**The delivery layer is half the project.** A dashboard a claims analyst can actually use is worth more than a marginally better AUC that never ships.
+
+**Guardrails belong in code.** Any policy that lives only in a document eventually gets ignored under time pressure.
+
+## Future improvements
+
+- SHAP-based local explanations per provider.
+- Network features across providers, physicians, and beneficiaries; fraud is often a graph.
+- Probability calibration and threshold optimization against investigation cost, not just against AUC.
+- Analyst feedback loop feeding a retraining pipeline.
