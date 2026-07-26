@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Menu, X } from "lucide-react";
 import { primaryNav } from "@/data/navigation";
 import { site } from "@/data/site";
@@ -13,6 +13,8 @@ export function Nav() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
+  const openerRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     function onScroll() {
@@ -23,10 +25,38 @@ export function Nav() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  // Escape closes the mobile menu and returns focus to the opener.
+  useEffect(() => {
+    if (!open) return;
+    function onKey(e: KeyboardEvent) {
+      if (e.key === "Escape") {
+        setOpen(false);
+        openerRef.current?.focus();
+      }
+    }
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [open]);
+
+  // When the menu opens, move focus into the first menu item.
+  useEffect(() => {
+    if (open) {
+      const first = menuRef.current?.querySelector<HTMLAnchorElement>("a");
+      first?.focus();
+    }
+  }, [open]);
+
   // Anchor links from non-home pages route back to home + anchor.
   function resolveHref(href: string) {
     if (href.startsWith("#") && pathname !== "/") return `/${href}`;
     return href;
+  }
+
+  // aria-current for the current route. Anchor links stay unmarked because
+  // they aren't a page in the routing sense.
+  function isCurrent(href: string): boolean {
+    if (href.startsWith("#")) return false;
+    return pathname === href;
   }
 
   return (
@@ -58,15 +88,18 @@ export function Nav() {
         <ul className="hidden items-center gap-1 md:flex">
           {primaryNav.map((item) => {
             const href = resolveHref(item.href);
+            const current = isCurrent(item.href);
             return (
               <li key={item.href}>
                 <Link
                   href={href}
+                  aria-current={current ? "page" : undefined}
                   className={cn(
                     "inline-flex h-9 items-center rounded-full px-4 text-sm transition-colors duration-[var(--duration-fast)]",
                     item.cta
                       ? "border border-border-strong text-foreground hover:bg-surface"
                       : "text-secondary hover:text-foreground",
+                    current && !item.cta && "text-foreground",
                   )}
                 >
                   {item.label}
@@ -82,10 +115,12 @@ export function Nav() {
         <div className="flex items-center gap-2 md:hidden">
           <ThemeToggle />
           <button
+            ref={openerRef}
             type="button"
             onClick={() => setOpen((v) => !v)}
             aria-label={open ? "Close menu" : "Open menu"}
             aria-expanded={open}
+            aria-controls="mobile-nav"
             className="inline-flex size-9 items-center justify-center rounded-full border border-border text-secondary"
           >
             {open ? (
@@ -98,19 +133,32 @@ export function Nav() {
       </nav>
 
       {open && (
-        <div className="border-t border-border bg-background md:hidden">
+        <div
+          id="mobile-nav"
+          ref={menuRef}
+          className="border-t border-border bg-background md:hidden"
+        >
           <ul className="mx-auto flex max-w-[var(--container-max)] flex-col gap-1 px-6 py-4">
-            {primaryNav.map((item) => (
-              <li key={item.href}>
-                <Link
-                  href={resolveHref(item.href)}
-                  onClick={() => setOpen(false)}
-                  className="flex h-11 items-center rounded-md px-3 text-md text-secondary hover:bg-surface hover:text-foreground"
-                >
-                  {item.label}
-                </Link>
-              </li>
-            ))}
+            {primaryNav.map((item) => {
+              const current = isCurrent(item.href);
+              return (
+                <li key={item.href}>
+                  <Link
+                    href={resolveHref(item.href)}
+                    onClick={() => setOpen(false)}
+                    aria-current={current ? "page" : undefined}
+                    className={cn(
+                      "flex h-11 items-center rounded-md px-3 text-md hover:bg-surface",
+                      current
+                        ? "text-foreground"
+                        : "text-secondary hover:text-foreground",
+                    )}
+                  >
+                    {item.label}
+                  </Link>
+                </li>
+              );
+            })}
           </ul>
         </div>
       )}
